@@ -1,0 +1,60 @@
+{% extends "master_layout.html" %}
+{% block title %}Edit Student{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+  <form action="/student/{{data[0]}}" method="POST" class="edit-form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="mb-3">
+      <label for="avatar_url">Select Avatar</label>
+      <input type="file"class="input-group-text" name="avatar_file" />
+    </div>
+
+    <div class="mb-3">
+      <label for="id_number">ID NUMBER</label>
+      <input class="form-control" type="text" name="id_number" value="{{data[2]}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="first_name">FIRST NAME</label>
+      <input class="form-control" type="text" name="first_name" value="{{data[3]}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="last_name">LAST NAME</label>
+      <input class="form-control" type="text" name="last_name" value="{{data[4]}}">
+    </div>
+
+    <div class="mb-3">
+      <label for="year">YEAR</label>
+      <input class="form-control" list="years" id="year" name="year" value="{{data[6]}}">
+      <datalist id="years">
+        <option value="1st Year">
+        <option value="2nd Year">
+        <option value="3rd Year">
+        <option value="4th Year">
+      </datalist>
+    </div>
+
+    <div class="mb-3">
+      <label for="gender">GENDER</label>
+      <input class="form-control" list="genders" id="gender" name="gender" value="{{data[7]}}">
+      <datalist id="genders">
+        <option value="Male">
+        <option value="Female">
+      </datalist>
+    </div>
+
+    <div class="mb-3">
+      <label for="course">Course</label>
+      <select id="course" name="course_id">
+        {% for course in datas %}
+        <option value="{{ course[0] }}" {% if course[0]==data[5] %}selected{% endif %}>{{ course[2] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button style="font-size: medium;" class="btn btn-outline-success">UPDATE</button>
+
+  </form>
+</div>
+{% endblock %}

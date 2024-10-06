@@ -1,0 +1,36 @@
+{% extends "master_layout.html" %}
+{% block title %}Create Student{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+  <form action="{{ url_for('student.create') }}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="mb-3">
+      <input type="file" class="input-group-text" name="avatar_file" />
+    </div>
+
+    <div class="mb-3">{{ form.id_number.label }} {{ form.id_number(class_="form-control") }}</div>
+    <div class="mb-3">{{ form.first_name.label }} {{ form.first_name(class_="form-control") }}</div>
+    <div class="mb-3">{{ form.last_name.label }} {{ form.last_name(class_="form-control") }}</div>
+
+    <div class="mb-3">
+      <label for="course">Course</label>
+      <select id="course" name="course_id">
+        {% for course in courses %}
+        <option value="{{ course[0] }}">{{ course[2] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">{{ form.year.label }} {{ form.year(class_="form-control") }}</div>
+    <div class="mb-3">
+      <label for="gender">Gender</label>
+      <select name="gender" id="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <button style="font-size: medium;" class="btn btn-outline-success">Submit</button>
+  </form>
+  {% endblock %}
+</div>

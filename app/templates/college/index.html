@@ -1,0 +1,55 @@
+{% extends "master_layout.html" %}
+{% block title %}Colleges{% endblock %}
+
+{% block subtitle %}
+<div class="navbar-brand">College List</div>
+{% endblock %}
+
+{% block button %}
+<li class="nav-item">
+  <button type="button" class="btn btn-primary">
+    <a href="/college/create" style="color: white;">Add College</a></button>
+</li>
+{% endblock %}
+
+{% block search %}
+<form class="d-flex" role="search" action="{{ url_for('college.index') }}" method="GET">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <label for="keyword"></label>
+  <input class="form-control me-2" name="keyword" type="text" placeholder="Search College" aria-label="Search">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped" style="width: 70%; margin: auto;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>College Name</th>
+      <th>College Code</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for college in colleges %}
+    <tr>
+      <th>{{college[0]}}</th>
+      <th>{{college[1]}}</th>
+      <th>{{college[2]}}</th>
+      <th>
+        <a href="/college/edit/{{college[0]}}" class="btn btn-warning">Edit</a>
+        <button type="button" class="btn btn-danger btn-delete" data-id="{{ college[0] }}">Delete</button>
+      </th>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+  const url = "{{ url_for('college.delete') }}";
+</script>
+{% endblock %}

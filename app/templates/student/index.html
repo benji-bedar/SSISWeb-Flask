@@ -1,0 +1,67 @@
+{% extends "master_layout.html" %}
+{% block title %}Students{% endblock %}
+
+{% block subtitle %}
+<div class="navbar-brand">Student List</div>
+{% endblock %}
+
+{% block button %}
+<li class="nav-item">
+  <button type="button" class="btn btn-primary">
+    <a href="/student/create" style="color: white;">Add Student</a></button>
+</li>
+{% endblock %}
+
+{% block search %}
+<form class="d-flex" role="search" action="{{ url_for('student.index') }}" method="GET">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <label for="keyword"></label>
+  <input class="form-control me-2" name="keyword" type="text" placeholder="Search Student" aria-label="Search">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped" style="width: 70%;margin: auto;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th></th>
+      <th>ID Number</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Course</th>
+      <th>Year</th>
+      <th>Gender</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for student in students %}
+    <tr>
+      <td>{{student[0]}}</td>
+      <td>
+        <img src="{{ student[1] }}" alt="" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd; padding: 2px;">
+      </td>
+      <td>{{student[2]}}</td>
+      <td>{{student[3]}}</td>
+      <td>{{student[4]}}</td>
+      <td>{{student[5]}}</td>
+      <td>{{student[6]}}</td>
+      <td>{{student[7]}}</td>
+      <td>
+        <a href="/student/edit/{{student[0]}}" class="btn btn-warning">Edit</a>
+        <button type="button" class="btn btn-danger btn-delete" data-id="{{ student[0] }}">Delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+  const url = "{{ url_for('student.delete') }}";
+</script>
+{% endblock %}
