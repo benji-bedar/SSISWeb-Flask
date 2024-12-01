@@ -18,14 +18,14 @@
 
 </head>
 
-<body style="background-color: aquamarine;">
-  <div style="text-align: center;">
-    <h1>Student Information System</h1>
+<body style="background-color: rgb(127, 208, 255);">
+  <div style="text-align: center;color: rgb(255, 0, 0); font-weight: 800;" class="mb-4 py-4">
+    <h1>Simple Student Information System</h1>
   </div>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="margin: auto;width: 70%;background-color: aquamarine;">
-    <div class="container-fluid">
-      {% block subtitle %}{% endblock %}
+  <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 py-0" style="margin: auto;width: 90%;height: 50%;">
+    <div class="container-fluid" style="background-color: rgb(127, 208, 255);">
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
         <span class="navbar-toggler-icon"></span>
@@ -48,7 +48,9 @@
       </div>
     </div>
   </nav>
-
+  <div class="mb-2 py-2" style="display: flex; justify-content: center; align-items: center; color: black; font-size: 30px; font-weight: 500;">
+    {% block subtitle %}{% endblock %}
+  </div>
   {% block content %}{% endblock %}
   {% block scripts %}{% endblock %}
 </body>
