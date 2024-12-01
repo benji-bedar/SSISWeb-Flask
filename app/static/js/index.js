@@ -24,4 +24,12 @@ $(function () {
       }
     });
   });
+
+
+  var flashMessage = document.getElementById('flash-message');
+  if (flashMessage) {
+    setTimeout(function() {
+      flashMessage.style.display = 'none';  // Hide flash message after 5 seconds
+    }, 1000);  // Set delay in milliseconds (5000ms = 5 seconds)
+  }
   

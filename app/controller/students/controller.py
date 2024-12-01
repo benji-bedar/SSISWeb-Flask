@@ -1,4 +1,5 @@
-from flask import render_template, redirect, request, url_for, jsonify
+from flask import render_template, redirect, request, url_for, jsonify, session, flash
+from functools import wraps
 from . import student
 import app.models.student as StudentModel
 import app.models.course as CourseModel
@@ -6,38 +7,47 @@ from app.controller.students.forms import StudentForm
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
+# Utility decorator for login protection
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:  # Check if the user is logged in
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('auth.login'))  # Redirect to login page
+        return f(*args, **kwargs)
+    return decorated_function
+
 @student.route("/")
 @student.route("/student")
+@login_required
 def index():
     keyword = request.args.get('keyword', default='', type=str)
     students = StudentModel.Students.all(keyword)
-
     return render_template("student/index.html", students=students)
 
 @student.route("/student/create", methods=['POST', 'GET'])
+@login_required
 def create():
     form = StudentForm(request.form)
-
     if request.method == 'POST':
-        avatar_file = upload(request.files['avatar_file'])        
+        avatar_file = upload(request.files['avatar_file'])
         url, options = cloudinary_url(avatar_file['public_id'], width=100, height=150, crop="fill")
         student = StudentModel.Students(avatar_url=url, id_number=form.id_number.data, first_name=form.first_name.data, last_name=form.last_name.data, course_id=form.course_id.data, year=form.year.data, gender=form.gender.data)
         student.add()
-
         return redirect(url_for('.index'))
-    else:    
+    else:
         courses = CourseModel.Courses.all('')
-
         return render_template("student/create.html", form=form, courses=courses)
 
 @student.route("/student/edit/<id>", methods=['POST', 'GET'])
+@login_required
 def edit(id):
     student = StudentModel.Students.edit(id)
     course = CourseModel.Courses.all('')
-
     return render_template("student/edit.html", data=student, datas=course)
 
 @student.route('/student/<id>', methods=['POST'])
+@login_required
 def update(id):
     if request.method == 'POST':
         avatar_file = request.files.get('avatar_file')
@@ -63,12 +73,10 @@ def update(id):
         return "Form validation failed", 400  
 
 @student.route('/student/delete', methods=['POST'])
+@login_required
 def delete():
     id = request.form['id']
-
     if id:
         StudentModel.Students.delete(id)
-
         return jsonify(success=True, message="Successful")
-
     return jsonify(success=False, message="Failed")

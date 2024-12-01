@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Login</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}  <!-- CSRF token included automatically -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                {{ form.username(class="form-control") }}  <!-- Render username field with Bootstrap styling -->
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                {{ form.password(class="form-control") }}  <!-- Render password field with Bootstrap styling -->
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+    </div>
+
+    <!-- Bootstrap Modal for Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% for category, message in messages %}
+                    {% if category == 'danger' %}
+                    <p class="text-danger">{{ message }}</p>
+                    {% elif category == 'success' %}
+                    <p class="text-success">{{ message }}</p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Show the modal if there are any flash messages
+        var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        errorModal.show();
+    </script>
+    {% endif %}
+    {% endwith %}
+</body>
+
+</html>

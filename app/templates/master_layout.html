@@ -19,15 +19,46 @@
 </head>
 
 <body style="background-color: rgb(127, 208, 255);">
-  <div style="text-align: center;color: rgb(255, 0, 0); font-weight: 800;" class="mb-4 py-4">
-    <h1>Simple Student Information System</h1>
+  <div style="display: flex; align-items: center; justify-content: center;">
+    <div style="text-align: center;color: rgb(255, 0, 0); font-weight: 800;" class="mb-4 py-4">
+      <h1>Simple Student Information System</h1>
+    </div>
+    <div style="display: flex; justify-content: flex-end; align-items: flex-end; width: 55vw;">
+      <div>
+        {% if 'user' in session %}
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+          {% else %}
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+          {% endif %}
+      </div>
+      <div></div>
+    </div>
   </div>
 
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        <div class="alert alert-info flash-message" role="alert" id="flash-message">
+          {% for category, message in messages %}
+            {% if category == 'info' %}
+              <p>{{ message }}</p>
+            {% elif category == 'success' %}
+              <p class="text-success">{{ message }}</p>
+            {% elif category == 'danger' %}
+              <p class="text-danger">{{ message }}</p>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 py-0" style="margin: auto;width: 90%;height: 50%;">
     <div class="container-fluid" style="background-color: rgb(127, 208, 255);">
-
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,15 +79,15 @@
       </div>
     </div>
   </nav>
+
+  <!-- Content Block -->
   <div class="mb-2 py-2" style="display: flex; justify-content: center; align-items: center; color: black; font-size: 30px; font-weight: 500;">
     {% block subtitle %}{% endblock %}
   </div>
+
   {% block content %}{% endblock %}
+  
   {% block scripts %}{% endblock %}
 </body>
 
 </html>
-
-
-
-
